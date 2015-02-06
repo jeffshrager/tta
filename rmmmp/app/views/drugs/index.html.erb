@@ -1,0 +1,154 @@
+<div class="main_content">
+<%= form_tag '/drugs/summarize_evidence', :id=>"details" do -%>
+    <div id="drug_list_container" class="container">
+      <fieldset>
+        <h1 class="section_title">
+                        <span class="step">Step 1. </span> Select treatment(s): 
+                        <!--
+                        <a class="trigger" href=""><%= image_tag("question-mark.png", :size=>"15x16", :class=>"info", :alt=>"step 1 info") %></a>
+			<div class="tooltip" style="display:none"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> 
+			</div>
+                         -->
+		</h1>
+        <div id="drug_headings">
+            <a href="#numbers">#</a>
+            <% ("A".."Z").each do |letter| %>
+                <a href="#letter_<%=letter%>"><%=letter%></a>
+            <% end %>
+        </div>
+        <div id="drugs">
+            <% last_drug_heading = "" %>
+            <% @drugs.each do |drug| %>
+ 				<% if drug =~ /^[a-zA-Z]/ %>
+                    <% if last_drug_heading != drug[0..0].upcase %>
+                       <% last_drug_heading = drug[0..0].upcase %>
+                       <div class="drug_block"><a name="letter_<%=last_drug_heading%>"><%=last_drug_heading.to_s%></a></div>
+                    <% end %>
+                <% else %>
+                    <% if last_drug_heading != "#"%>
+                       <% last_drug_heading = "#" %>
+                       <div class="drug_block"><a name="numbers">#</a></div>
+                    <% end %>  
+                <% end %>
+                <div class="drug">
+                <%= check_box_tag "drug[#{drug}]", "" %>
+                <label for="drug_<%="#{drug.gsub(/[^A-Za-z0-9\-]/,'_')}"%>"><%=drug %></label>
+                </div>
+            <% end %>
+        </div>
+        <div class="drugs_returned">(<%=@drugs.size%> drugs returned)</div>
+      </fieldset>
+    </div>
+
+    
+    <div id="controls_container" class="container">
+    <h1 class="section_title" style="margin-bottom:5px;margin-top:15px"><span class="step">Step 2.</span> Select the desired evidence threshold: <a class="trigger" href=""><%= image_tag("question-mark.png", :size=>"15x16", :class=>"info", :alt=>"step 2 info") %></a>
+		<div class="tooltip" style="display:none"><p>Threshold refers to the minimal proportion of literature evidence (in favor of a given hypothesis) required to identify a prevalent hypothesis.</p>
+		</div>
+	</h1>
+      <fieldset>
+<!--        <legend>Controls:</legend> -->
+		<div id="threshold_container">
+        	<label id="threshold_label"><b>Threshold:</b> </label> <input type="text" size="30" id="threshold" name="threshold" value="0.5"/>
+		</div>
+        <div id="relationship_analyze">
+<!--			<h4>Relationship to Analyze:</h4> -->
+<!--			<select name="relation"> -->
+<!--				<option id="relation_efficacy" value="efficacy">Efficacy</option> -->
+<!--				<option id="relation_toxicity" value="toxicity">Toxicity</option> -->
+<!--				<option id="relation_synergism" value="synergism">Synergism</option> -->
+<!--				<option id="relation_progression" name="relation" value="progression">Progression</option> -->
+<!--			</select> -->
+		</div>
+      </fieldset>
+    </div>
+    <div class="clear"></div>
+    <h1 class="section_title" style="margin-top:20px"><span class="step">Step 3.</span> Click to summarize the literature evidence: <!-- <a class="trigger" href=""><%= image_tag("question-mark.png", :size=>"15x16", :class=>"info", :alt=>"step 3 info") %></a>
+		<div class="tooltip" style="display:none"><p>Explanatory text here.</p>
+		</div> -->
+	</h1>
+    <%= submit_tag 'Summarize evidence >>', :id=>'summarize_evidence' %> <span id="loading_mesg">Loading..</span>
+<% end %>
+
+<div id="hypotheses_display" style="display:none">
+	<div id="hypotheses_display_root">	
+</div>
+	
+
+</div>
+</div>
+
+
+<%= content_for :javascript_include do %>
+<script type="text/javascript" charset="utf-8">
+  package_drugs = function() {
+      var sel_drugs = $('input[name^="drug"]:checked').map(function(index){
+          return $(this).attr("name");
+      }).toArray().join(",");
+      return "drugs=" + sel_drugs;
+  };
+  package_test_results = function() {
+      var sel_results = $('#test_results input:checked').map(function(index){
+          return $(this).attr("name") + $(this).val()}).toArray().join(",")
+      return "test_results=" + sel_results;
+  };
+
+$(document).ready(function() {
+//   $("form#summarize_evidence")
+//           .bind("ajax:loading", function(data, status, xhr) {
+//                $("#loading_mesg").show();
+//                $("#hypotheses_display").hide();
+//                $("#hypotheses_display_root").html('')
+//            })
+//           .bind("ajax:complete", function(data, status, xhr) { $("#loading_mesg").hide(); })
+//           .bind("ajax:success", function(data, status, xhr) {
+//                $("#hypotheses_display_root").html(status);
+//                $("#hypotheses_display").show();
+//            });
+
+//   $("#drug_rank_bttn").click(function(event){
+//       var fields = $("form#summarize_evidence").serialize();
+//       console.log("fields: "+fields);
+//   });
+
+
+        
+   
+
+    $("input#summarize_evidence").click(function(event){
+		
+        $("#loading_mesg").show();
+        var summarize_url = "/drugs/summarize_evidence?"+ $("form#details").serialize();
+        $.get(summarize_url, function(data){
+            $("#loading_mesg").hide();
+            $("div#hypotheses_display_root").html(data);
+            $("input#rank_drugs").click(function(event){
+                var params = $.param($('#threshold')) + "&" + package_test_results() + "&" + $("form#details").serialize();
+                var drug_rank_url = "/drugs/rank_drugs?" + params;
+                // alert(package_drugs());
+                $.get(drug_rank_url, function(data){
+                    $("div#drug_rank_display_root").html(data);
+                    $("#drug_rank_display").show();
+					$(".trigger3").tooltip();
+                });
+                event.preventDefault();
+            });
+            $("#hypotheses_display").show();
+			$(".trigger2").tooltip();
+            $("#test_results").show();
+			$("a.collapsible").click(function(event){
+		        $(this).find("span").toggleClass("triangle_open");
+		        $(this).parent().find("div.collapsible_wrapper").toggle();
+		    });
+        });
+		
+		
+        event.preventDefault();
+
+		
+		
+    });
+	
+});
+</script>
+<% end %>

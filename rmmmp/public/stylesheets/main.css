@@ -1,0 +1,294 @@
+html {
+  font-size: 100%; /* Avoids IE 5-7 bug with EM fonts */
+  background: #f6f6f6;
+
+}
+body {
+  margin: 0;
+  padding: 0em; 
+  font-family: Arial, Helvetica, "Liberation Sans", FreeSans, sans-serif;  
+  font-size: 12px;
+  line-height: 1.4; 
+  color: #404040;
+  background: #f6f6f6;
+}
+
+a:link, a:active, a:visited {
+	color: #2D6DB1;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #404040;
+}
+
+td, th {
+	border: 1px solid #AAA9A9;
+	padding: .5em;
+}
+
+th {
+	background: none repeat scroll 0 0 #ccc;
+    font-size: 13px;
+    text-align: left;
+}
+
+.clear {
+    clear:both;
+}
+
+.page_container {
+	width:1000px;
+	margin-left: auto;
+	margin-right:auto;
+	border:1px solid #ddd;
+	padding: 20px;
+	background:white;
+}
+
+#header {
+    padding: 0 0 20px 0;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 10px;
+}
+
+.main_content {
+	padding-top: 10px;
+}
+
+.link_item {
+	float: right;
+	padding: 10px 0;
+}
+
+.topperl {
+	width: 200px;
+	float: left;
+	border: 0px solid #ccc;
+	font-size: 17px;
+	margin-right: 7px;
+	padding: 2px;
+}
+
+.topperc {
+	width: 400px;
+	border: 0px solid #ccc;
+	float: left;
+	padding: 2px;
+}
+
+.topperr {
+	width: 320px;
+	float: left;
+	border: 0px solid #ccc;
+	font-size: 17px;
+	margin-left: 35px;
+	padding: 2px;
+}
+
+.link_item .link_thumbnail {
+	width: 70px;
+	float: left;
+	border: 1px solid #ccc;
+	margin-right: 5px;
+	padding: 2px;
+}
+
+.link_item .link_headline {
+	float: left;
+}
+
+.section_title {
+	margin-top: 0;
+}
+
+#muted_table {
+	width:100%;
+	font-size: 10px;
+}
+
+.prevalent_container, #result_list_container, #drugs_ranking_container {
+	border: 1px solid #DDDDDD;
+	padding: 20px;
+	width: 450px;
+}
+
+.step {
+	color: #0B7552;
+}
+
+.disclaimer {
+	color: red;
+	border: 1px solid #ddd;
+	text-align:center;
+	padding: 5px;
+	background: #f6f6f6;
+	margin-top:7px;
+	margin-bottom:10px;
+}
+
+/*start choose drugs*/
+form#details {
+	border: 1px solid #DDDDDD;
+	float: left;
+	width: 450px;
+	padding: 20px;
+}
+
+#drugs {
+	height: 295px;
+	overflow: auto;
+	border: 1px solid #ccc;
+}
+
+.drug {
+	padding: 4px;
+	font-size: 12px;
+}
+
+.drug_block {
+	background-color:#ccc;
+	font-weight:bold;
+	padding:2px 0 2px 4px;
+}
+
+#summarize_evidence {
+	float: right;
+}
+
+#drug_headings a {
+	font-size: 12px;
+    font-weight: bold;
+    margin-right: 4px;
+    text-decoration: none;
+}
+
+.drugs_returned {
+	font-size: 11px;
+	color: green;
+	float: right;
+	margin-top: 5px;
+}
+
+.container legend {
+    font-size:15px;
+    font-weight:bold;
+	color: #404040;
+}
+
+#threshold_container {
+	float: left;
+}
+
+#relationship_analyze {
+	width: 270px;
+	float:left;
+	margin-top:2px;
+}
+
+#relationship_analyze h4 {
+	width: 143px;
+	float:left;
+	margin-top:0;
+	margin-left:20px;
+}
+
+#controls_container input#threshold {
+    width:40px;
+}
+
+#controls_container ul {
+    margin-top:3px;
+}
+#controls_container li {
+    list-style:none;
+}
+
+#loading_mesg {
+	display:none;
+	color:red;
+	font-style:italic;
+	margin-left:5px;
+}
+/*end choose drugs*/
+
+/*start drug ranking*/
+#drug_rank_display {
+	margin: 20px 0 0 0px;
+}
+/*end drug ranking*/
+
+/*start prevalent hypotheses*/
+.prevalent_container {
+	margin-top: 20px;
+	float: left;
+	clear: left;
+}
+/*end prevalent hypotheses*/
+
+/*start test results*/
+#result_list_container input {
+	float: right;
+}
+
+#result_list_container td input {
+	float: left;
+}
+/*end test results*/
+
+/* drugs/molecules */
+#molecule_list_container .molecule_label {
+    font-weight:bold;
+    width:425px;
+    text-align:right;
+    float:left;
+}
+#molecule_list_container .molecule_values {
+    margin-left:10px;
+    float:left;
+}
+#molecule_list_container .mutation_entry {
+    margin-left:20px;
+}
+
+#drug_rank_params {
+	float: right;
+}
+/* end */
+
+/*start old hypotheses*/
+a.collapsible {
+    color: #404040;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+	margin: 1em 0;
+}
+
+.collapsible span {
+    background: url("../images/triangle_collapsed.jpg") no-repeat scroll 0 1px transparent;
+    padding-right: 14px;
+    width: 8px;
+}
+
+.collapsible span.triangle_open {
+    background: url("../images/triangle_expanded.jpg") no-repeat scroll 0 5px transparent;
+}
+/*end old hypotheses*/
+
+/*start tooltip*/
+.tooltip {
+	width: 200px;
+	font-size: 11px;
+	background: #f6f6f6;
+	border: 1px solid #404040;
+	padding: 10px;
+	color: black;
+	font-weight: normal;
+}
+
+.tooltip p {
+	margin-bottom: 0;
+}
+/*end tooltip*/

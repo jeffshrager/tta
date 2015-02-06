@@ -1,0 +1,34 @@
+<div class="container" id="molecule_list_container">
+    <div style="padding-bottom:10px">
+        <span class="drug_list_label">Please select molecules: <small style="color:green">(<%=@molecules.size%> returned)</small></span>
+    </div>
+<% if @molecules.empty? %>
+    <h2>No molecules selected</h2>
+    <a href="/drugs"><< Go back</a>
+<% else %>
+    <%= form_tag '/drugs/drug_molecules_computed' do -%>
+        <%= submit_tag 'Compute'%>
+        <div id="rows">
+
+          <% @molecules.each do |molecule| %>
+            <div class="row">
+                <div class="molecule_row">
+                    <div class="molecule_label"><%=molecule['molecule'] %> (<%=molecule['molecule_state']%>): </div>
+                    <div class="molecule_values">
+                        <div class="test_result_entries">
+                            <span class="test_result_entry">Yes:    <input type="radio" name="molecules[<%=molecule['id'] %>]" value="yes"></span>
+                            <span class="test_result_entry">No:     <input type="radio" name="molecules[<%=molecule['id'] %>]" value="no"></span>
+                            <span class="test_result_entry">Unknown: <input type="radio" name="molecules[<%=molecule['id'] %>]" value="unknown" checked></span>
+
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+          <% end %>
+        </div>
+        <%= submit_tag 'Compute'%>
+    <% end %>
+
+<% end %>      
+</div>

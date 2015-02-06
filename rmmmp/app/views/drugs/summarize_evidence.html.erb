@@ -1,0 +1,170 @@
+<div id='drug_rank_params'>
+<%= form_tag '/drugs/rank_drugs', :id => 'test_results' do -%>
+  
+  <div id="result_list_container" class="container">
+    <fieldset>
+      <h1 class="section_title"><span class="step">Step 5.</span> Match melanoma/patient molecular profile with literature findings: <!-- <a class="trigger2" href=""><%= image_tag("question-mark.png", :size=>"15x16", :class=>"info", :alt=>"step 5 info") %></a>
+	  	<div class="tooltip" style="display:none"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+		</div> -->
+	</h1>
+      <div id="result_list">
+        <table style="width:100%">
+	  <tr>
+	    <th colspan=2><center>Melanoma/patient</center></th>
+            <th rowspan=2><center>Literature Findings</center></th>
+	    </tr>
+            <tr>
+            <th>Discordant</th>
+            <th>Concordant</th>
+          </tr>
+        <% @conditions.uniq.sort.each do |c| -%>
+              <tr>
+                  <td><%= radio_button_tag c, 'm' %></td>
+                  <td><%= radio_button_tag c, 'p' %></td>
+                  <td><%= label_tag 'condition', c %></td>
+              </tr>
+        <% end %>
+        </table>
+      </div>
+    </fieldset>
+        <h1 class="section_title"><span class="step">Step 6.</span> Click here to match the molecular profile: <!-- <a class="trigger2" href=""><%= image_tag("question-mark.png", :size=>"15x16", :class=>"info", :alt=>"step 6 info") %></a>
+			<div class="tooltip" style="display:none"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			</div> -->
+	    </h1>
+	<%= submit_tag "Perform Match >>", :id => 'rank_drugs' %>
+	<div class="clear"></div>
+  </div>
+	
+<% end %>
+<div class="clear"></div>
+<div id="drug_rank_display">
+	  <div id="drug_rank_display_root"></div>
+</div>
+</div>
+<!-- <div class="clear"></div> -->
+<div class="prevalent_container">
+	<h1 class="section_title"><span class="step">Step 4.</span> Examine the prevalent hypotheses in the literature (more detail can be found in &quot;details&quot; table below): 
+		<a class="trigger2" href=""><%= image_tag("question-mark.png", :size=>"15x16", :class=>"info", :alt=>"step 4 info") %></a>
+		<div class="tooltip" style="display:none"><p>The score indicates the proportion of literature supporting each hypothesis.</p>
+		</div>
+	</h1>
+	<div id="hypotheses_inner_container">
+ 		<div>
+    		<table>
+		    <tr>
+		      <th>Observation</th>
+		      <th>Modifier</th>
+		      <th>Hypothesis</th>
+		      <th>Treatment</th>
+<!--		      <th>Z-score</th> -->
+<!--		      <th>P-value</th> -->
+		      <th>Score Percentage</th>
+
+
+		    </tr>
+
+		    <% @hypotheses.each do |hypothesis| %>
+		      <tr>
+		        <% prevalence =  hypothesis.calc_sets[hypothesis.prevalent].sign %>
+		        <% fact = hypothesis.factoids.first %>
+
+		        <td><%=fact.molecule+" "+fact.molecule_state %></td>
+		        <td><%=fact.modifier %></td>        
+		        <td><%= translate_prevalence(@relation,prevalence)  %></td>
+
+		        <td><%=fact.drug_name %></td>
+<!--		        <td><%=@z = hypothesis.calc_sets[prevalence+1].z(@threshold).round(3)%></td> -->
+<!--		        <td><%=hypothesis.calc_sets[prevalence+1].p(@z).round(3)%></td> -->
+		        <td><%=hypothesis.calc_sets[prevalence+1].score_percentage.round(3)%></td>
+
+		      </tr>
+
+
+		    <% end %>  
+		    </table>
+		</div> 
+	</div>
+</div>
+<div class="clear"></div>
+
+<a href="javascript:void(0)" class="collapsible" style="margin-top:30px"><span></span>Click the blue triangle to see details of prevalent hypotheses (you may have to scroll back down to see the results)</a>
+<div class="collapsible_wrapper" style="display:none"> 
+<table id="muted_table">
+	<tr>
+		<th>Prevalent<br>Hypothesis</th>
+<!--
+		<th>Computations</th>
+		<th>Total</th>
+-->
+		<th>Facts</th>
+	</tr>
+	<% @hypotheses.each do |hypothesis| %>
+	<tr>
+		<td><%= hypothesis.prevalence_string %></td>
+<!--
+		<td>
+		<table>
+		<tr>
+		<th>var</th>
+		<% (-1..1).each do |key| %>
+		<th><%=key%></th>
+		<%end %>
+	</tr>
+
+
+<% [["evidence_score","Evidence score"],
+    ["corrected_score_percentage","Corrected Score %"],
+    ["variance","Variance"],
+    ["standard_error","Standard error"],
+    ["confidence_interval","(1.96*Se)"],
+    ["confidence_interval_upper","CIupper"],
+    ["confidence_interval_lower","CIlower"],
+    ["z","Z"]].each do |expr,label| %>
+
+	<tr>
+		<td><%= label + "(" + expr + ")" %></td>
+		<% (0..2).each do |key| %>
+		  <td><%= expr=='z' ? hypothesis.calc_sets[key].z(@threshold).round(4) : hypothesis.calc_sets[key].attribute_get(expr).round(4) %></td>
+		<% end %>
+	</tr>
+
+
+<%end %>
+
+</tr>
+</table>
+<td><%= hypothesis.total_score %></td>
+</td>
+-->
+
+<td>
+<table>
+<b>
+<tr>
+<td><h2>Observation</h2></td>
+<td><h2>Modifier</h2></td>
+<td><h2>Relationship</h2></td>
+<td><h2>Drug</h2></td>
+<td><h2>Model</h2></td>
+<td><h2>Reference</h2></td>
+<td><h2>Notes</h2></td>
+</tr>
+</b>
+<% hypothesis.factoids.each do |factoid| %>
+ <tr>
+ <td><%=factoid.molecule+" "+factoid.molecule_state %></td>
+ <td><%=factoid.modifier %></td>
+ <td><%=factoid.relationship %></td>
+ <td><%=factoid.drug_name %></td>
+ <td><%=factoid.evidence_type_string %></td>
+ <td><%=factoid.reference %></td>
+ <td><%=factoid.notes %></td>
+ </tr>
+<%end %>
+</table>
+</td>
+</tr>
+<% end %>
+</table>
+</div>  
+</div>

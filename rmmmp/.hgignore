@@ -1,0 +1,17 @@
+syntax: glob
+config/release.yml
+config/server_desc.yml
+config/server_name.yml
+config/applicationConfig.yml
+config/server_desc.yml
+config/server_name.yml
+config/database.yml
+out/*
+coverage/*
+tmp/*
+log/*.log
+.idea/*
+.project
+*~
+**/*\#
+.DS_Store

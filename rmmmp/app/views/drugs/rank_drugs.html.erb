@@ -1,0 +1,29 @@
+<div id="drugs_ranking_container">
+        <h1 class="section_title"><span class="step">Step 7.</span> Examine the results of matching (including drug ranking):
+			<a class="trigger3" href=""><%= image_tag("question-mark.png", :size=>"15x16", :class=>"info", :alt=>"step 7 info") %></a>
+			<div class="tooltip" style="display:none"><p><b>Overall Score</b> ranges from +1 to -1 and refers to the proportion of literature supporting a relationship of sensitivity (positive values) or resistance (negative values) between the melanoma/patient molecular profile and the existing evidence. <br> <p> <b>P-value</b> refers to the test for which the overall score is significantly different from the chosen threshold.</p></p>
+			</div>
+		</h1>
+	<table style="width: 100%">
+	  <tr><td>Results interpretation: 1) If Overall Score (OS) is positive and greater than the threshold, and the corresponding P-value is significant (<0.05), then the molecular profile is associated with sensitivity to the given drug; 2) If OS is negative and greater (in absolute value) than the threshold, and the corresponding P-value is significant (<0.05), then the molecular profile is associated with resistance to the given drug; 3) Any other result indicates that the molecular profile provides no enough information to support either sensitivity or resistance.</td></tr>
+	<tr>
+
+	  <div class="clear"></div>
+	  </table>
+
+	<table style="width: 100%">
+	<th>Drug</th>
+	<th>Overall Score</th>
+<!--	<th>Z-score</th> -->
+	<th>P-value</th>
+	</tr>
+	<% @ranking.each do |ranking| %>
+	  <tr>
+	    <td><%= ranking[0] %></td>
+	    <td><%= if ranking[1][:overall_score] >= 0 then sprintf("%g (sensitivity)", ranking[1][:overall_score].round(2)) else sprintf("%g (resistance)", ranking[1][:overall_score].round(2)) end %></td>
+<!--	    <td><%= ranking[1][:z].round(3) %></td> -->
+	    <td><%= sprintf("%g", ranking[1][:p].round(4)) %></td>
+	  </tr>
+	<% end %>
+	</table>
+</div>
