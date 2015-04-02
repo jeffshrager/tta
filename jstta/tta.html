@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+</head>
+
+<body>
+
+<div ng-app="" ng-controller="TTDController"> 
+
+<table>
+  <tr ng-repeat="x in names">
+    <td>{{ x.Molecule }}</td>
+    <td>{{ x.StateMol }}</td>
+  </tr>
+</table>
+
+</div>
+
+<script>
+function TTDController($scope,$http) {
+  $http.get("TargetedTherapyDatabase_TTD.json")
+  .success(function(response) {$scope.names = response;});
+}
+</script>
+
+</body>
+</html>
